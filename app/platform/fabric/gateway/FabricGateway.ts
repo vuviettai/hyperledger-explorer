@@ -232,6 +232,11 @@ export class FabricGateway {
 			// Import identity wallet
 			await this.wallet.put(this.fabricConfig.getCaAdminUser(), identity);
 
+			const storedIdentityBEAdmin = await this.wallet.get(id);
+			if (storedIdentityBEAdmin) {
+				logger.info('identityBEAdmin already exists in wallet', storedIdentityBEAdmin);
+				return storedIdentityBEAdmin
+			}
 			const adminUser = await this.getUserContext(
 				this.fabricConfig.getCaAdminUser()
 			);

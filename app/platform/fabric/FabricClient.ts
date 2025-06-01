@@ -8,6 +8,7 @@ import { ExplorerError } from '../../common/ExplorerError';
 import { explorerError } from '../../common/ExplorerMessage';
 import { FabricGateway } from '../../platform/fabric/gateway/FabricGateway';
 import * as FabricUtils from './utils/FabricUtils';
+import { loggers } from 'winston';
 
 const logger = helper.getLogger('FabricClient');
 
@@ -256,6 +257,7 @@ export class FabricClient {
 	 * @memberof FabricClient
 	 */
 	setChannelGenHash(name, channel_genesis_hash) {
+		logger.info(`Set channel ${name} => ${channel_genesis_hash}`)
 		this.channelsGenHash.set(name, channel_genesis_hash);
 	}
 
@@ -277,11 +279,14 @@ export class FabricClient {
 	 * @memberof FabricClient
 	 */
 	getChannelNameByHash(channel_genesis_hash) {
+		logger.info(`getChannelNameByHash ${channel_genesis_hash}`)
 		for (const [channel_name, hash_name] of this.channelsGenHash.entries()) {
 			if (channel_genesis_hash === hash_name) {
 				return channel_name;
 			}
 		}
+		logger.debug(`getChannelNameByHash ${channel_genesis_hash} not found`)
+		return "mychannel";
 	}
 
 	/**

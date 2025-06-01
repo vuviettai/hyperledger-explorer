@@ -63,7 +63,7 @@ export class SyncServices {
 	 * @memberof SyncServices
 	 */
 	/*eslint-disable */
-	async initialize() {}
+	async initialize() { }
 	/* eslint-enable */
 	/**
 	 *
@@ -392,8 +392,9 @@ export class SyncServices {
 			}
 
 			// Getting necessary information from configuration file
-			const bootMode = network_configs[network_id].bootMode.toUpperCase();
+			const bootMode = (network_configs[network_id].bootMode || boot_modes[0]).toUpperCase();
 			const channel_genesis_hash = client.getChannelGenHash(channel_name);
+			logger.info(`syncBlocks ${channel_name} ${channel_genesis_hash}`)
 			const latestBlockHeight = parseInt(channelInfo.height.low) - 1;
 
 			// Get the value of noOfBlocks from configuration file
@@ -440,8 +441,9 @@ export class SyncServices {
 						await this.processBlockEvent(client, block, noDiscovery);
 					}
 					logger.info(`Synced block #${blockHeight}`);
-				} catch {
+				} catch (err) {
 					logger.error(`Failed to process Block # ${blockHeight}`);
+					logger.error(err)
 				}
 			}
 
@@ -628,7 +630,7 @@ export class SyncServices {
 			if (txid && txid !== '') {
 				const validation_codes =
 					block.metadata.metadata[
-						fabprotos.common.BlockMetadataIndex.TRANSACTIONS_FILTER
+					fabprotos.common.BlockMetadataIndex.TRANSACTIONS_FILTER
 					];
 				const val_code = validation_codes[txIndex];
 				validation_code = convertValidationCode(val_code);
@@ -722,7 +724,7 @@ export class SyncServices {
 			if (
 				!noDiscovery &&
 				header.channel_header.typeString ===
-					fabric_const.BLOCK_TYPE_ENDORSER_TRANSACTION &&
+				fabric_const.BLOCK_TYPE_ENDORSER_TRANSACTION &&
 				(chaincode === fabric_const.CHAINCODE_LSCC ||
 					chaincode === fabric_const.CHAINCODE_LIFECYCLE)
 			) {
@@ -793,9 +795,8 @@ export class SyncServices {
 				channel_name,
 				title: `Block ${block.header.number.toString()} added to Channel: ${channel_name}`,
 				type: 'block',
-				message: `Block ${block.header.number.toString()} established with ${
-					block.data.data.length
-				} tx`,
+				message: `Block ${block.header.number.toString()} established with ${block.data.data.length
+					} tx`,
 				time: createdt,
 				txcount: block.data.data.length,
 				datahash: block.header.data_hash.toString('hex'),

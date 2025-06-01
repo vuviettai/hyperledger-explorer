@@ -29,7 +29,8 @@ import Dialog from '@material-ui/core/Dialog';
 import Loader from 'react-loader-spinner';
 import Select from '../Styled/Select';
 import NotificationsPanel from '../Panels/NotificationsPanel';
-import Logo from '../../static/images/Explorer_Logo.svg';
+//import Logo from '../../static/images/Explorer_Logo.svg';
+import Logo from '../../static/images/beka_logo_dark.svg';
 import AdminPanel from '../Panels/AdminPanel';
 import { chartOperations, chartSelectors } from '../../state/redux/charts';
 import { tableOperations, tableSelectors } from '../../state/redux/tables';
@@ -397,16 +398,16 @@ export class HeaderView extends Component {
 	};
 
 	/**enrollOpen = () => {
-    this.setState(() => ({ enrollOpen: true }));
+	this.setState(() => ({ enrollOpen: true }));
   };
 
   enrollClose = () => {
-    this.setState(() => ({ enrollOpen: false }));
+	this.setState(() => ({ enrollOpen: false }));
   };
 
   onEnroll = user => {
-    alert(JSON.stringify(user, null, 2));
-    this.enrollClose();
+	alert(JSON.stringify(user, null, 2));
+	this.enrollClose();
   }; */
 
 	handleDrawOpen = drawer => {
